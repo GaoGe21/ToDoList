@@ -1,6 +1,7 @@
 import React from "react";
-import "./TodoList.css";
+// import autobind from "autobind-decorator";
 import TodoItem from "./TodoItem";
+import "./TodoList.css";
 
 class TodoList extends React.Component {
 
@@ -10,6 +11,9 @@ class TodoList extends React.Component {
             inputValue: '',
             list: []
         }
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleBtnClick = this.handleBtnClick.bind(this);
+    this.handleItemDelete = this.handleItemDelete.bind(this);
     }
 
     render() {
@@ -21,47 +25,50 @@ class TodoList extends React.Component {
                         id="insert"
                         className='input'
                         value={this.state.inputValue}
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputChange}
                     />
-                    <button  onClick={this.handleBtnClick.bind(this)}>submit</button>
+                    <button  onClick={this.handleBtnClick}>submit</button>
                 </div>
                 <ul>
-                    {this.state.list.map(
-                        (item, index) => {
-                            return (
-                                <TodoItem 
-                                    content={item} 
-                                    index={index}
-                                    deleteItem={this.handleItemDelete.bind(this)}
-                                    />
-                            )
-                        }
-                    )}
+                    {this.getTodoItem()}
+                    
                 </ul>
             </React.Fragment>
         )
     }
 
-    handleInputChange(e){
-        this.setState({
-            inputValue: e.target.value
+    getTodoItem() {
+        return this.state.list.map((item, index) => {
+            return (
+                <TodoItem 
+                    key={index}
+                    content={item} 
+                    index={index}
+                    deleteItem={this.handleItemDelete}
+                    />
+            )
         })
     }
 
+    handleInputChange(e){
+        const currentValue = e.target.value;
+        this.setState(() => ({ inputValue: currentValue }));
+    }
+
     handleBtnClick(){
-        this.setState({
-            list: [...this.state.list, this.state.inputValue],
+        this.setState((prevState) => ({
+            list: [...prevState.list, prevState.inputValue],
             inputValue: ''
-        })
+        }));
     }
 
     handleItemDelete(index){
         // immutable
-        const currentList = [...this.state.list];
-        currentList.splice(index, 1);
-        this.setState({
-            list: currentList
-        })
+        this.setState((prevState) => {
+            const list = [...prevState.list];
+            list.splice(index, 1);
+            return {list}
+        });
     }
 }
 
