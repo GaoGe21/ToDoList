@@ -19,15 +19,22 @@ class TodoList extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div>
-                    <label htmlFor="insert">input: </label>
+                <div className="todoList-container">
+                    <label className="todoList-title" htmlFor="insert">
+                        Input you message: 
+                    </label>
                     <input
                         id="insert"
-                        className='input'
+                        className="todoList-input"
                         value={this.state.inputValue}
                         onChange={this.handleInputChange}
                     />
-                    <button  onClick={this.handleBtnClick}>submit</button>
+                    <button className="todoList-button" onClick={this.handleBtnClick}>
+                        submit
+                    </button>
+                </div>
+                <div className="todoList-description">
+                    Below is the information you added. Click to Delete !
                 </div>
                 <ul>
                     {this.getTodoItem()}

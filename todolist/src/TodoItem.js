@@ -9,10 +9,10 @@ class TodoItem extends React.Component {
 
     render() {
         const { content } =  this.props;
-        return (
-        <div onClick={this.handleClick}>
-            {content}
-        </div>
+        return (        
+            <div className="todoItem-items" onClick={this.handleClick}>
+                {content}
+            </div>
         )
     }
 
